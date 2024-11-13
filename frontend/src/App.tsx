@@ -1,12 +1,11 @@
-import './App.css'
+import '@mantine/core/styles.css';
+import '@matine/form/styles.css'
+import '@matine/notifications/styles.css'
+import '@matine/dropzone/styles.css'
+import '@matine/modals/styles.css'
 
-function App() {
+import { MantineProvider } from '@mantine/core';
 
-  return (
-    <>
-      
-    </>
-  )
+export default function App() {
+  return <MantineProvider>{/* Your app here */}</MantineProvider>;
 }
-
-export default App
