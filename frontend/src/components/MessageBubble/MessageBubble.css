@@ -1,0 +1,19 @@
+
+
+.message-bubble {
+	border-radius: 10px;
+	max-width: 200px;
+	margin: 0;
+	text-align: left;
+}
+
+.users-message {
+	background-color: var(--users-message);
+	color: whitesmoke;
+	align-self: flex-end;
+}
+
+.others-message {
+	align-self: flex-start;
+	background-color: var(--others-message);
+}
