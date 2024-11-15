@@ -7,19 +7,7 @@ import { Messages } from "../../types/Message";
 const messages: Messages = {
 	messages: [
 		{
-			text: "Saturday around 6 or 7 works for me.",
-			isUser: false,
-		},
-		{
-			text: "I think that friday,sat, or sun around 6 or 7 would be good for me.",
-			isUser: true,
-		},
-		{
-			text: "Alright great, what would be a good time for you?",
-			isUser: false,
-		},
-		{
-			text: "Yeah sure thats a legendary project, looking forward to it!",
+			text: "Hi its me john, from earlier today during the club meeting",
 			isUser: true,
 		},
 		{
@@ -27,8 +15,28 @@ const messages: Messages = {
 			isUser: false,
 		},
 		{
-			text: "Hi its me john, from earlier today during the club meeting",
+			text: "Yeah sure thats a legendary project, looking forward to it!",
 			isUser: true,
+		},
+		{
+			text: "Alright great, what would be a good time for you?",
+			isUser: false,
+		},
+		{
+			text: "I think that friday,sat, or sun around 6 or 7 would be good for me.",
+			isUser: true,
+		},
+		{
+			text: "Saturday around 6 or 7 works for me.",
+			isUser: false,
+		},
+		{
+			text: "Great where do you want to meet?",
+			isUser: true,
+		},
+		{
+			text: "I think the library on Sepulveda would work well, what do you think?",
+			isUser: false,
 		},
 	],
 };
@@ -37,7 +45,7 @@ export const ChatWindow = () => {
 	return (
 		<>
 			<Container p={2} fluid className="chat-container">
-				<Stack justify="flex-end" style={{ height: "100%" }}>
+				<Stack className="chat-window">
 					<ChatBox messages={messages} />
 					<ChatInput />
 				</Stack>
