@@ -1,0 +1,6 @@
+.chat-input {
+	width: "100%";
+	flex-wrap: nowrap;
+	padding-left: 12px;
+	padding-right: 12px;
+}
