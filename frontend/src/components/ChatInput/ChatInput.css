@@ -1,6 +1,8 @@
-.chat-input {
-	width: "100%";
-	flex-wrap: nowrap;
+.chat-input-box {
 	padding-left: 12px;
 	padding-right: 12px;
+}
+
+.chat-input {
+	flex-grow: 1;
 }

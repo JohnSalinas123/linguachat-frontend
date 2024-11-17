@@ -12,14 +12,14 @@ export const ChatInput = () => {
 	return (
 		<>
 			<Group
-				className="chat-input"
+				className="chat-input-box"
 				align="center"
 				justify="center"
 				mb="sm"
 				gap="xs"
 			>
 				<TextInput
-					style={{ width: "100%" }}
+					className="chat-input"
 					{...field.getInputProps()}
 					placeholder="UniMessage"
 					radius="sm"

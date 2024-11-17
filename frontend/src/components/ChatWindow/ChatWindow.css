@@ -1,8 +1,8 @@
 .chat-container {
 	border: 1px solid #aeb0b3;
 	border-radius: 5px;
-	height: calc(100vh - 155px);
 	width: 600px;
+	height: 100%;
 }
 
 .chat-window {
