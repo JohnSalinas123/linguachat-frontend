@@ -24,3 +24,15 @@
 html {
 	height: 100%;
 }
+
+#root {
+	margin: 0 0;
+	box-sizing: border-box;
+	width: 100%;
+}
+
+.page {
+	display: block;
+	width: 100%;
+	height: calc(100vh - 120px);
+}
