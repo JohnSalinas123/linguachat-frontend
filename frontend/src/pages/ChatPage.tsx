@@ -2,7 +2,6 @@ import { Container, Flex } from "@mantine/core";
 import { ChatWindow } from "../components/ChatWindow/ChatWindow";
 
 import "./ChatPage.css";
-import { ChatRightPanel } from "../components/ChatSidePanels/ChatRightPanel";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "@clerk/clerk-react";
@@ -34,8 +33,7 @@ export const ChatPage = () => {
 				},
 			});
 			console.log(response.data);
-			setChats(response.data)
-
+			setChats(response.data);
 		} catch (error) {
 			if (axios.isAxiosError(error)) {
 				console.log(error.status);
@@ -63,7 +61,10 @@ export const ChatPage = () => {
 						<ChatList chats={chats} />
 					</Container>
 					<ChatWindow />
-					<ChatRightPanel />
+					<Container
+						mx={0}
+						className="chat-sp lg-border right-panel-border"
+					></Container>
 				</Flex>
 			</div>
 		</>
