@@ -1,1 +1,27 @@
+.chat-components-box {
+	height: 100%;
+}
+
+.chat-sp {
+	width: 300px;
+	height: 100%;
+}
+
+.left-panel-border {
+	border-style: solid;
+	border-width: 1px 0px 1px 1px;
+	border-radius: 5px 0 0 5px;
+}
+
+.right-panel-border {
+	border-style: solid;
+	border-width: 1px 1px 1px 0px;
+	border-radius: 0 5px 5px 0;
+}
+
+@media screen and (max-width: 980px) {
+	.chat-sp {
+		display: none;
+	}
+}
 
