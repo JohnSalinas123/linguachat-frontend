@@ -1,8 +1,11 @@
 :root {
 	--main-blue: #0099ff;
+	--light-gray: #aeb0b3;
+	--lighter-gray: #dce6df;
+	--lightest-gray: #bbbaba;
 
 	--users-message: var(--main-blue);
-	--others-message: #dce6df;
+	--others-message: var(--lighter-gray);
 
 	--message-button: var(--main-blue);
 	--chat-scrollbar: #b2beb6;
@@ -35,4 +38,17 @@ html {
 	display: block;
 	width: 100%;
 	height: calc(100vh - 120px);
+}
+
+.fill-space {
+	height: 100%;
+	width: 100%;
+}
+
+.lg-border {
+	border: 1px solid #aeb0b3;
+}
+
+.lg-text {
+	color: #bbbaba;
 }

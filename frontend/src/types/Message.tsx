@@ -1,8 +1,5 @@
-export type Messages = {
-	messages: Message[];
-	chatId: string;
-	lastMessage: string;
-};
+export type Messages = Message[] | [];
+
 
 export type Message = {
 	id: string;

@@ -1,9 +1,12 @@
+.chat-box-frame {
+	margin-left: 3px;
+	margin-right: 3px;
+	padding-top: 10px;
+}
+
 .chat-box-messages {
 	overflow-y: scroll;
 	height: 100%;
-	padding-top: 10px;
-	margin-left: 3px;
-	margin-right: 3px;
 }
 
 .chat-box-messages::-webkit-scrollbar {
