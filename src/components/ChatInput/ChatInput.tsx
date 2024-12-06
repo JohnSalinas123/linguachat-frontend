@@ -15,7 +15,7 @@ export const ChatInput = () => {
 				className="chat-input-box"
 				align="center"
 				justify="center"
-				mb="sm"
+				p="sm"
 				gap="xs"
 			>
 				<TextInput
