@@ -1,12 +1,9 @@
-export type Messages = Message[] | [];
-
+export type Messages = Message[] | null;
 
 export type Message = {
 	id: string;
-	text: string;
-	language: string;
-	isUser: boolean;
-	name: string;
-	timestamp: string;
-	status: "sent" | "delivered";
+	sender_id: string;
+	content: string;
+	created_at: string;
+	lang_code: string;
 };
