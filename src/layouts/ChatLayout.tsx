@@ -14,5 +14,9 @@ export default function ChatLayout() {
 
 	if (!isLoaded) return "Loading...";
 
-	return userId ? <Outlet /> : null;
+	return userId ? (
+		<div className="page">
+			<Outlet />
+		</div>
+	) : null;
 }
