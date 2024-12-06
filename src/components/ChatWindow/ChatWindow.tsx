@@ -11,26 +11,24 @@ export const ChatWindow = ({ messages }: { messages: Messages }) => {
 
 	return (
 		<>
-			<Container mx={0} p={2} className="chat-container lg-border">
-				<div className="chat-window">
-					<div className="fill-space chat-box-frame">
-						{messages && messages.length != 0 ? (
-							<Stack className="chat-box-messages">
-								{messages &&
-									messages.map((message: Message, index: number) => (
-										<MessageBubble
-											key={index}
-											message={message}
-											userId={user?.id}
-										/>
-									))}
-							</Stack>
-						) : (
-							<ChatBoxEmpty />
-						)}
-					</div>
-					<ChatInput />
-				</div>
+			<Container mx={0} p={0} className="chat-container lg-border">
+				<div className="chat-window-header">Chat Menu</div>
+				{messages && messages.length != 0 ? (
+					<Stack className="chat-box-messages">
+						{messages &&
+							messages.map((message: Message, index: number) => (
+								<MessageBubble
+									key={index}
+									message={message}
+									userId={user?.id}
+								/>
+							))}
+					</Stack>
+				) : (
+					<ChatBoxEmpty />
+				)}
+
+				<ChatInput />
 			</Container>
 		</>
 	);
@@ -38,7 +36,7 @@ export const ChatWindow = ({ messages }: { messages: Messages }) => {
 
 const ChatBoxEmpty = () => {
 	return (
-		<Center className="fill-space">
+		<Center className="no-messages">
 			<p className="lg-text">No messages</p>
 		</Center>
 	);
