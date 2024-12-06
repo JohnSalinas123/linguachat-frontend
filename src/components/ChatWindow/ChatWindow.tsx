@@ -1,20 +1,45 @@
-import { Container, Stack } from "@mantine/core";
-import { ChatBox } from "../ChatBox/ChatBox";
+import { Center, Container, Stack } from "@mantine/core";
 import { ChatInput } from "../ChatInput/ChatInput";
 import "./ChatWindow.css";
-import { Messages } from "../../types/Message";
+import { Messages, Message } from "../../types/Message";
+import { MessageBubble } from "../MessageBubble/MessageBubble";
+import { useUser } from "@clerk/clerk-react";
 
-const messages: Messages = [];
+export const ChatWindow = ({ messages }: { messages: Messages }) => {
+	const { user } = useUser();
+	console.log(messages);
 
-export const ChatWindow = () => {
 	return (
 		<>
 			<Container mx={0} p={2} className="chat-container lg-border">
-				<Stack className="chat-window">
-					<ChatBox messages={messages} />
+				<div className="chat-window">
+					<div className="fill-space chat-box-frame">
+						{messages && messages.length != 0 ? (
+							<Stack className="chat-box-messages">
+								{messages &&
+									messages.map((message: Message, index: number) => (
+										<MessageBubble
+											key={index}
+											message={message}
+											userId={user?.id}
+										/>
+									))}
+							</Stack>
+						) : (
+							<ChatBoxEmpty />
+						)}
+					</div>
 					<ChatInput />
-				</Stack>
+				</div>
 			</Container>
 		</>
+	);
+};
+
+const ChatBoxEmpty = () => {
+	return (
+		<Center className="fill-space">
+			<p className="lg-text">No messages</p>
+		</Center>
 	);
 };
