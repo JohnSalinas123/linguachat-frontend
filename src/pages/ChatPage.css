@@ -1,5 +1,7 @@
 .chat-components-box {
 	height: 100%;
+	width: 100%;
+	padding: 20px;
 }
 
 .chat-sp {
@@ -80,13 +82,13 @@
 	height: 45px !important;
 }
 
-@media screen and (max-width: 980px) {
+@media screen and (max-width: 1250px) {
 	.right-panel {
 		display: none;
 	}
 }
 
-@media screen and (max-width: 650px) {
+@media screen and (max-width: 925px) {
 	.chat-list {
 		display: none;
 	}
@@ -95,5 +97,11 @@
 @media screen and (max-width: 550px) {
 	.lang-set-window {
 		width: 350px;
+	}
+
+	.chat-components-box {
+		height: 100%;
+		width: 100%;
+		padding: 0;
 	}
 }

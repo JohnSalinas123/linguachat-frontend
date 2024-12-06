@@ -109,21 +109,19 @@ export const ChatPage = () => {
 
 	return (
 		<>
-			<div className="page">
-				<Flex
-					justify="center"
-					gap={0}
-					wrap="nowrap"
-					className="chat-components-box"
-				>
-					<ChatList chats={chats} setSelectedChat={setSelectedChat} />
-					<ChatWindow messages={messages} />
-					<Container
-						mx={0}
-						className="right-panel chat-sp lg-border right-panel-border"
-					></Container>
-				</Flex>
-			</div>
+			<Flex
+				justify="center"
+				gap={0}
+				wrap="nowrap"
+				className="chat-components-box"
+			>
+				<ChatList chats={chats} setSelectedChat={setSelectedChat} />
+				<ChatWindow messages={messages} />
+				<Container
+					mx={0}
+					className="right-panel chat-sp lg-border right-panel-border"
+				></Container>
+			</Flex>
 		</>
 	);
 };
