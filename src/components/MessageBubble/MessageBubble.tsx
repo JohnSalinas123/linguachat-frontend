@@ -4,20 +4,28 @@ import { Message } from "../../types/Message";
 
 import "./MessageBubble.css";
 
-export const MessageBubble = ({ message }: { message: Message }) => {
+export const MessageBubble = ({
+	message,
+	userId,
+}: {
+	message: Message;
+	userId: string | undefined;
+}) => {
 	return (
 		<>
 			<Container
 				className={`message-bubble-outer ${
-					message.isUser ? "users-align" : "others-align"
+					message.sender_id == userId ? "users-align" : "others-align"
 				}`}
 			>
 				<Text
 					className={`message-info ${
-						message.isUser ? "message-info-user" : "message-info-other"
+						message.sender_id == userId
+							? "message-info-user"
+							: "message-info-other"
 					}`}
 				>
-					{message.name}
+					{"Name"}
 				</Text>
 				<Container
 					pt="4px"
@@ -25,17 +33,19 @@ export const MessageBubble = ({ message }: { message: Message }) => {
 					pl="10px"
 					pr="10px"
 					className={`message-bubble ${
-						message.isUser ? "users-message" : "others-message"
+						message.sender_id == userId ? "users-message" : "others-message"
 					}`}
 				>
-					<Text size="md">{message.text}</Text>
+					<Text size="md">{message.content}</Text>
 				</Container>
 				<Text
 					className={`message-info ${
-						message.isUser ? "message-info-user" : "message-info-other"
+						message.sender_id == userId
+							? "message-info-user"
+							: "message-info-other"
 					}`}
 				>
-					{message.timestamp}
+					{message.created_at}
 				</Text>
 			</Container>
 		</>

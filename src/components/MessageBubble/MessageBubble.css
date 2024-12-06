@@ -1,5 +1,6 @@
 .message-bubble-outer {
 	margin: 0 !important;
+	max-width: 200px !important;
 }
 
 .users-align {
@@ -12,8 +13,7 @@
 
 .message-bubble {
 	border-radius: 10px;
-	max-width: 200px !important;
-	margin: 0;
+	margin: 0 !important;
 	text-align: left;
 }
 
