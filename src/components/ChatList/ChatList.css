@@ -8,6 +8,11 @@
 	justify-content: space-between;
 	height: 50px;
 	border-bottom: 1px solid var(--light-gray);
+	padding: 0 10px;
+}
+
+.chat-list-box {
+	height: calc(100% - 50px);
 }
 
 .chat-item-box {
@@ -23,20 +28,21 @@
 }
 
 .chat-item-box:hover {
-	background-color: #0099ff51;
+	background-color: var(--light-blue);
 }
 
 .chat-participants {
-	width: 150px;
+	width: 60%;
 	display: block;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	color: #212529 !important;
 }
 
 .chat-last-msg {
 	display: block;
-	width: 250px;
+	width: 80%;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;

@@ -1,115 +1,120 @@
 import {
 	Button,
+	Center,
 	Container,
 	Group,
+	Skeleton,
 	Stack,
 	Text,
 	UnstyledButton,
 } from "@mantine/core";
-import { Chat, Chats } from "../../types/Chats";
-import { useEffect } from "react";
+import { Chats } from "../../types/Chats";
+import { Dispatch, SetStateAction, useEffect } from "react";
 
 import { FaCirclePlus } from "react-icons/fa6";
 
 import "./ChatList.css";
 import axios from "axios";
-import { useAuth } from "@clerk/clerk-react";
 
 axios.defaults.baseURL = "http://localhost:8080";
 axios.defaults.withCredentials = true;
 
 interface ChatListProps {
-	chats: Chats;
+	chats: Chats | null;
+	setSelectedChat: Dispatch<SetStateAction<string | null>>;
 }
 
-export const ChatList = ({ chats }: ChatListProps) => {
-	const listOfChats = chats.map((chat) => (
-		<ChatListItem key={chat.chatId} chat={chat} />
-	));
+export const ChatList = ({ chats, setSelectedChat }: ChatListProps) => {
+	//let listOfChats = null
 
-	return (
-		<>
-			<ChatListHeader />
-			<Stack gap={0}>{listOfChats}</Stack>
-		</>
-	);
-};
-
-interface ChatListItemProps {
-	chat: Chat;
-}
-
-const ChatListItem = ({ chat }: ChatListItemProps) => {
 	const convertLastMessageTime = (dataWithTimeZone: string) => {
 		const date = new Date(dataWithTimeZone);
 
 		//const hours = date.getHours();
 		//const timeIdentifier = hours >= 12 ? "PM" : "AM";
 
-		return `${date.getMonth()}/${date.getDate()}/${date.getFullYear()%100}`;
+		return `${date.getMonth()}/${date.getDate()}/${date.getFullYear() % 100}`;
 	};
 
-	return (
-		<>
-			<UnstyledButton>
-				<Container className="chat-item-box">
-					<Group justify="space-between">
-						<Text className="chat-participants">
-							{chat.participants.join(",")}
-						</Text>
-						<Text className="chat-last-msg-time" c="dimmed">
-							{chat.last_message_time &&
-								convertLastMessageTime(chat.last_message_time)}
-						</Text>
-					</Group>
+	const handleChatSelected = (chatID: string) => {
+		console.log(`Button for chat: ${chatID}`);
+		setSelectedChat(chatID);
+	};
 
-					<Text className="chat-last-msg" c="dimmed" size="sm">
-						{chat.last_message}
-					</Text>
-				</Container>
-			</UnstyledButton>
-		</>
-	);
-};
-
-const ChatListHeader = () => {
-	const { getToken } = useAuth();
-
-	useEffect(() => {}, []);
-
-	const handleCreateChat = async () => {
-		try {
-			const token = await getToken();
-			const response = await axios.post(
-				"/api/users",
-				{},
-				{
-					headers: {
-						Authorization: `Bearer ${token}`,
-					},
-				}
+	const renderChats = () => {
+		if (chats && chats.length > 0) {
+			return (
+				<Stack gap={0}>
+					{chats &&
+						chats.map((chat) => (
+							<UnstyledButton
+								key={chat.chatId}
+								onClick={() => handleChatSelected(chat.chatId)}
+							>
+								<Container className="chat-item-box">
+									<Group justify="space-between">
+										<Text className="chat-participants">
+											{chat.participants.join(",")}
+										</Text>
+										<Text className="chat-last-msg-time" c="dimmed">
+											{chat.last_message_time &&
+												convertLastMessageTime(chat.last_message_time)}
+										</Text>
+									</Group>
+									<Text className="chat-last-msg" c="dimmed" size="sm">
+										{chat.last_message}
+									</Text>
+								</Container>
+							</UnstyledButton>
+						))}
+				</Stack>
 			);
+		}
 
-			console.log(response.status);
-			console.log(response.data);
-		} catch (error) {
-			console.log(error);
+		if (chats && chats.length == 0) {
+			console.log("No chats found");
+			return (
+				<Center className="fill-space">
+					<p className="lg-text">No chats</p>
+				</Center>
+			);
 		}
 	};
 
 	return (
 		<>
-			<Container className="chat-list-header">
-				<Text className="chat-list-header-title">Chats</Text>
-				<Button
-					onClick={handleCreateChat}
-					h={30}
-					radius="xl"
-					rightSection={<FaCirclePlus size={15} />}
-				>
-					Invite
-				</Button>
-			</Container>
+			<div className="chat-list chat-sp lg-border left-panel-border">
+				<div className="chat-list-box">
+					<ChatListHeader />
+					<Skeleton radius={0} className="fill-space" visible={chats == null}>
+						{renderChats()}
+					</Skeleton>
+				</div>
+			</div>
 		</>
+	);
+};
+
+const ChatListHeader = () => {
+	//const { getToken } = useAuth();
+
+	useEffect(() => {}, []);
+
+	const handleCreateChat = async () => {
+		return;
+	};
+
+	return (
+		<div className="chat-list-header">
+			<Text className="chat-list-header-title">Chats</Text>
+			<Button
+				onClick={handleCreateChat}
+				h={30}
+				radius="xl"
+				rightSection={<FaCirclePlus size={15} />}
+			>
+				Invite
+			</Button>
+		</div>
 	);
 };
