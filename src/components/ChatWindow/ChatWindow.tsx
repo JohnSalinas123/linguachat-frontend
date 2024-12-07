@@ -7,10 +7,20 @@ import { useUser } from "@clerk/clerk-react";
 
 import { LuMessageCircle } from "react-icons/lu";
 import { LuSettings } from "react-icons/lu";
+import { useEffect, useRef } from "react";
 
 export const ChatWindow = ({ messages }: { messages: Messages }) => {
 	const { user } = useUser();
-	console.log(messages);
+
+	const messagesEndRef = useRef<null | HTMLDivElement>(null);
+
+	const scrollToBottom = () => {
+		messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+	};
+
+	useEffect(() => {
+		scrollToBottom();
+	}, [messages]);
 
 	return (
 		<>
@@ -49,11 +59,11 @@ export const ChatWindow = ({ messages }: { messages: Messages }) => {
 									userId={user?.id}
 								/>
 							))}
+						<div ref={messagesEndRef} />
 					</Stack>
 				) : (
 					<ChatBoxEmpty />
 				)}
-
 				<ChatInput />
 			</Container>
 		</>
