@@ -1,7 +1,7 @@
 .chat-components-box {
 	height: 100%;
 	width: 100%;
-	padding: 20px;
+	padding: 0;
 }
 
 .chat-sp {
@@ -27,13 +27,11 @@
 .left-panel-border {
 	border-style: solid;
 	border-width: 1px 0px 1px 1px;
-	border-radius: 5px 0 0 5px;
 }
 
 .right-panel-border {
 	border-style: solid;
 	border-width: 1px 1px 1px 0px;
-	border-radius: 0 5px 5px 0;
 }
 
 /* Language selection window */
@@ -103,5 +101,9 @@
 		height: 100%;
 		width: 100%;
 		padding: 0;
+	}
+
+	.chat-window-header {
+		display: flex;
 	}
 }

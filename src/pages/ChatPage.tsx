@@ -2,6 +2,7 @@ import {
 	Button,
 	CloseButton,
 	Container,
+	Drawer,
 	Flex,
 	Group,
 	Radio,
@@ -19,6 +20,7 @@ import { Chats } from "../types/Chats";
 import { ChatList } from "../components/ChatList/ChatList";
 import { FaArrowRight } from "react-icons/fa6";
 import { Messages } from "../types/Message";
+import { useDisclosure } from "@mantine/hooks";
 
 export const ChatPage = () => {
 	const { getToken, isLoaded, isSignedIn } = useAuth();
@@ -28,9 +30,13 @@ export const ChatPage = () => {
 	const [selectedChat, setSelectedChat] = useState<string | null>(null);
 	const [messagesPage, setMessagesPage] = useState<number>(0);
 
+	// side panel states
+	const [leftOpened, { openLeft, closeLeft}] = useDisclosure(false);
+	const [rightOpened, { openRight, closeRight}] = useDisclosure(false);
+
 	// TODO: change once implement user details/settings, incoporate into
 	// fetchUserSettings
-	//const [{ close }] = useDisclosure(!languageSet);
+	
 	const { user } = useUser();
 
 	useEffect(() => {
@@ -115,6 +121,9 @@ export const ChatPage = () => {
 				wrap="nowrap"
 				className="chat-components-box"
 			>
+				<Drawer opened={leftOpened} onClose={close} title="Authentication">
+					<ChatList chats={chats} setSelectedChat={setSelectedChat} />
+				</Drawer>
 				<ChatList chats={chats} setSelectedChat={setSelectedChat} />
 				<ChatWindow messages={messages} />
 				<Container

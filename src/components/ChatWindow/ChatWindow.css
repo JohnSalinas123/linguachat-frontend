@@ -5,12 +5,19 @@
 }
 
 .chat-window-header {
-	display: flex;
+	display: none;
 	align-items: center;
 	justify-content: space-between;
 	min-height: 50px;
 	border-bottom: 1px solid var(--light-gray);
-	padding: 0 10px;
+	padding: 0 20px;
+}
+
+.chat-menu-icons {
+	color: var(--main-blue);
+	height: 25px;
+	width: 25px;
+	stroke-width: 1;
 }
 
 .no-messages {
