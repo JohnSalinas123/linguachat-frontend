@@ -5,12 +5,14 @@ import {
 	SignedOut,
 	UserButton,
 } from "@clerk/clerk-react";
-import { AppShell, Burger, Group } from "@mantine/core";
+
+import { ChatNavButton } from "../components/ChatNavButton/ChatNavButton";
+import { AppShell, Burger, Group, UnstyledButton } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+
 import { GrLanguage } from "react-icons/gr";
 
 import "./RootLayout.css";
-import { ChatNavButton } from "../components/ChatNavButton/ChatNavButton";
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
@@ -32,13 +34,13 @@ export default function RootLayout() {
 			publishableKey={PUBLISHABLE_KEY}
 		>
 			<AppShell
-				header={{ height: 60 }}
+				header={{ height: { base: 48, sm: 60 } }}
 				navbar={{
 					width: 300,
 					breakpoint: "sm",
 					collapsed: { desktop: true, mobile: !opened },
 				}}
-				padding="md"
+				padding={0}
 			>
 				<AppShell.Header>
 					<Group h="100%" px="md">
@@ -56,6 +58,9 @@ export default function RootLayout() {
 								</Group>
 							</Link>
 							<Group ml="xl" gap={50} visibleFrom="sm">
+								<UnstyledButton>Home</UnstyledButton>
+								<UnstyledButton>About</UnstyledButton>
+								<UnstyledButton>Support</UnstyledButton>
 								{isAtLandingPage && <ChatNavButton />}
 								<div>
 									<SignedIn>
@@ -71,6 +76,24 @@ export default function RootLayout() {
 						</Group>
 					</Group>
 				</AppShell.Header>
+
+				<AppShell.Navbar py="md" px={4}>
+					<UnstyledButton>Home</UnstyledButton>
+					<UnstyledButton>About</UnstyledButton>
+					<UnstyledButton>Support</UnstyledButton>
+					{isAtLandingPage && <ChatNavButton />}
+					<div>
+						<SignedIn>
+							<UserButton showName={true} />
+						</SignedIn>
+						<SignedOut>
+							<Link className="app-sign-in" to="/sign-in">
+								Sign In
+							</Link>
+						</SignedOut>
+					</div>
+				</AppShell.Navbar>
+
 				<AppShell.Main>
 					<Outlet />
 				</AppShell.Main>

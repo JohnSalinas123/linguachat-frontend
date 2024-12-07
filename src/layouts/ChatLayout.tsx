@@ -6,8 +6,6 @@ export default function ChatLayout() {
 	const { userId, isLoaded } = useAuth();
 	const navigate = useNavigate();
 
-	console.log("test", userId);
-
 	React.useEffect(() => {
 		if (isLoaded && !userId) {
 			navigate("/sign-in");
@@ -16,5 +14,9 @@ export default function ChatLayout() {
 
 	if (!isLoaded) return "Loading...";
 
-	return userId ? <Outlet /> : null;
+	return userId ? (
+		<div className="page">
+			<Outlet />
+		</div>
+	) : null;
 }
