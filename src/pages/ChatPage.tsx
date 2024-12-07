@@ -31,12 +31,12 @@ export const ChatPage = () => {
 	const [messagesPage, setMessagesPage] = useState<number>(0);
 
 	// side panel states
-	const [leftOpened, { openLeft, closeLeft}] = useDisclosure(false);
-	const [rightOpened, { openRight, closeRight}] = useDisclosure(false);
+	const [leftOpened, { openLeft, closeLeft }] = useDisclosure(false);
+	const [rightOpened, { openRight, closeRight }] = useDisclosure(false);
 
 	// TODO: change once implement user details/settings, incoporate into
 	// fetchUserSettings
-	
+
 	const { user } = useUser();
 
 	useEffect(() => {
@@ -122,9 +122,17 @@ export const ChatPage = () => {
 				className="chat-components-box"
 			>
 				<Drawer opened={leftOpened} onClose={close} title="Authentication">
-					<ChatList chats={chats} setSelectedChat={setSelectedChat} />
+					<ChatList
+						chats={chats}
+						selectedChat={selectedChat}
+						setSelectedChat={setSelectedChat}
+					/>
 				</Drawer>
-				<ChatList chats={chats} setSelectedChat={setSelectedChat} />
+				<ChatList
+					chats={chats}
+					selectedChat={selectedChat}
+					setSelectedChat={setSelectedChat}
+				/>
 				<ChatWindow messages={messages} />
 				<Container
 					mx={0}

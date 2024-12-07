@@ -21,10 +21,15 @@ axios.defaults.withCredentials = true;
 
 interface ChatListProps {
 	chats: Chats | null;
+	selectedChat: string | null;
 	setSelectedChat: Dispatch<SetStateAction<string | null>>;
 }
 
-export const ChatList = ({ chats, setSelectedChat }: ChatListProps) => {
+export const ChatList = ({
+	chats,
+	selectedChat,
+	setSelectedChat,
+}: ChatListProps) => {
 	//let listOfChats = null
 
 	const convertLastMessageTime = (dataWithTimeZone: string) => {
@@ -37,7 +42,9 @@ export const ChatList = ({ chats, setSelectedChat }: ChatListProps) => {
 	};
 
 	const handleChatSelected = (chatID: string) => {
-		console.log(`Button for chat: ${chatID}`);
+		console.log(selectedChat);
+		if (chatID == selectedChat) return;
+
 		setSelectedChat(chatID);
 	};
 
@@ -51,7 +58,11 @@ export const ChatList = ({ chats, setSelectedChat }: ChatListProps) => {
 								key={chat.chatId}
 								onClick={() => handleChatSelected(chat.chatId)}
 							>
-								<Container className="chat-item-box">
+								<Container
+									className={`chat-item-box ${
+										chat.chatId == selectedChat ? "selected-chat" : ""
+									}`}
+								>
 									<Group justify="space-between">
 										<Text className="chat-participants">
 											{chat.participants.join(",")}
