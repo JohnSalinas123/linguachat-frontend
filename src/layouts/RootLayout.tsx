@@ -10,7 +10,8 @@ import { ChatNavButton } from "../components/ChatNavButton/ChatNavButton";
 import { AppShell, Burger, Group, UnstyledButton } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 
-import { GrLanguage } from "react-icons/gr";
+import { FaLanguage } from "react-icons/fa";
+import { IoChatboxOutline } from "react-icons/io5";
 
 import "./RootLayout.css";
 
@@ -34,6 +35,7 @@ export default function RootLayout() {
 			publishableKey={PUBLISHABLE_KEY}
 		>
 			<AppShell
+				withBorder={false}
 				header={{ height: { base: 48, sm: 60 } }}
 				navbar={{
 					width: 300,
@@ -53,7 +55,10 @@ export default function RootLayout() {
 						<Group justify="space-between" style={{ flex: 1 }}>
 							<Link className="app-home-link" to="/">
 								<Group>
-									<GrLanguage className="app-logo" />
+									<div className="app-logo-box">
+										<FaLanguage className=" app-logo app-logo-top" />
+										<IoChatboxOutline className="app-logo app-logo-bot" />
+									</div>
 									<h1 className="app-title">LinguaChat</h1>
 								</Group>
 							</Link>

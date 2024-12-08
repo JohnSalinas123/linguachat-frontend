@@ -10,12 +10,36 @@
 	color: inherit;
 }
 
-.app-logo {
-	--logo-size: 30px;
+.app-logo-box {
+	position: relative;
+	--logo-size: 32px;
 
 	height: var(--logo-size);
 	width: var(--logo-size);
+}
+
+.app-logo {
+	position: absolute;
+}
+
+.app-logo-top {
+	height: calc(var(--logo-size) - 10px);
+	width: calc(var(--logo-size) - 10px);
+
+	top: 2.5px;
+	left: 4.5px;
+
+	z-index: 10;
 	color: var(--main-blue);
+	border-radius: 20px;
+}
+
+.app-logo-bot {
+	z-index: 0;
+	color: black;
+
+	height: var(--logo-size);
+	width: var(--logo-size);
 }
 
 .app-title {
