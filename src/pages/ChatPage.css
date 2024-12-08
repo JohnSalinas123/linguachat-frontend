@@ -102,8 +102,4 @@
 		width: 100%;
 		padding: 0;
 	}
-
-	.chat-window-header {
-		display: flex;
-	}
 }

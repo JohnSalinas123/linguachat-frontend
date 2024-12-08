@@ -31,8 +31,10 @@ export const ChatPage = () => {
 	const [messagesPage, setMessagesPage] = useState<number>(0);
 
 	// side panel states
-	const [leftOpened, { openLeft, closeLeft }] = useDisclosure(false);
-	const [rightOpened, { openRight, closeRight }] = useDisclosure(false);
+	const [leftOpened, { open: openChatList, close: closeChatList }] =
+		useDisclosure(false);
+	const [rightOpened, { open: openRight, close: closeRight }] =
+		useDisclosure(false);
 
 	// TODO: change once implement user details/settings, incoporate into
 	// fetchUserSettings
@@ -121,19 +123,42 @@ export const ChatPage = () => {
 				wrap="nowrap"
 				className="chat-components-box"
 			>
-				<Drawer opened={leftOpened} onClose={close} title="Authentication">
+				<Drawer
+					opened={leftOpened}
+					onClose={closeChatList}
+					position="left"
+					title="Chats"
+					offset={20}
+					radius="md"
+				>
 					<ChatList
 						chats={chats}
 						selectedChat={selectedChat}
 						setSelectedChat={setSelectedChat}
 					/>
 				</Drawer>
-				<ChatList
-					chats={chats}
-					selectedChat={selectedChat}
-					setSelectedChat={setSelectedChat}
+				<Drawer
+					opened={rightOpened}
+					onClose={closeRight}
+					position="right"
+					offset={20}
+					radius="md"
+					title="Settings"
+				>
+					<div>Right drawer, wip</div>
+				</Drawer>
+				<div className="chat-list chat-sp lg-border left-panel-border">
+					<ChatList
+						chats={chats}
+						selectedChat={selectedChat}
+						setSelectedChat={setSelectedChat}
+					/>
+				</div>
+				<ChatWindow
+					messages={messages}
+					openChatList={openChatList}
+					openRight={openRight}
 				/>
-				<ChatWindow messages={messages} />
 				<Container
 					mx={0}
 					className="right-panel chat-sp lg-border right-panel-border"

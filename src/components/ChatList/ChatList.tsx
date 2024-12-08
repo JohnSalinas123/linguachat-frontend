@@ -94,13 +94,11 @@ export const ChatList = ({
 
 	return (
 		<>
-			<div className="chat-list chat-sp lg-border left-panel-border">
-				<div className="chat-list-box">
-					<ChatListHeader />
-					<Skeleton radius={0} className="fill-space" visible={chats == null}>
-						{renderChats()}
-					</Skeleton>
-				</div>
+			<div className="chat-list-box">
+				<ChatListHeader />
+				<Skeleton radius={0} className="fill-space" visible={chats == null}>
+					{renderChats()}
+				</Skeleton>
 			</div>
 		</>
 	);
