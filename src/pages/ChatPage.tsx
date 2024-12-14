@@ -19,16 +19,21 @@ import { useAuth, useUser } from "@clerk/clerk-react";
 import { Chats } from "../types/Chats";
 import { ChatList } from "../components/ChatList/ChatList";
 import { FaArrowRight } from "react-icons/fa6";
-import { Messages } from "../types/Message";
+import { Message } from "../types/Message";
 import { useDisclosure } from "@mantine/hooks";
+import { useOutletContext } from "react-router-dom";
 
 export const ChatPage = () => {
 	const { getToken, isLoaded, isSignedIn } = useAuth();
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [chats, setChats] = useState<Chats | null>(null);
-	const [messages, setMessages] = useState<Messages | null>(null);
+	const [messages, setMessages] = useState<Message[] | null>(null);
+	const [messagesLoading, setMessagesLoading] = useState<boolean>(false);
 	const [selectedChat, setSelectedChat] = useState<string | null>(null);
 	const [messagesPage, setMessagesPage] = useState<number>(0);
+
+	const [toggleDisabled] = useOutletContext<[(value?: boolean) => void]>();
+
 
 	// side panel states
 	const [leftOpened, { open: openChatList, close: closeChatList }] =
@@ -42,38 +47,43 @@ export const ChatPage = () => {
 	const { user } = useUser();
 
 	useEffect(() => {
-		if (!isLoaded && !isSignedIn) {
-			return;
-		}
+		// fetch user chats and set initial message page to 0
+		const loadUserChats = async () => {
+			if (!isLoaded || !isSignedIn || !user?.publicMetadata.lang_code) return;
 
-		if (user?.publicMetadata.lang_code) {
 			// fetch user chats
-			fetchUserChats();
-			setMessagesPage(0);
-		}
+			await fetchUserChats();
+		};
+
+		loadUserChats();
 	}, [isLoaded, isSignedIn, user, user?.publicMetadata.lang_code]);
 
 	useEffect(() => {
-		if (selectedChat) {
-			fetchChatMessages();
+		if (chats && chats.length > 0 && !selectedChat) {
+			const firstChatId = chats[0].chatId;
+			setSelectedChat(firstChatId);
+			loadChatMessages(firstChatId, 0);
 		}
-	}, [selectedChat, messagesPage]);
+	}, [chats]);
 
 	// fetchUserChats calls api for user chats
 	const fetchUserChats = async () => {
 		try {
-			const token = await getToken({ leewayInSeconds: 55 });
-			if (!token) {
+			const token = await getToken();
+			if (!token || token.length == 0) {
 				return;
 			}
+			//console.log(`Token: ${token}`);
+
 			const response = await axios.get("/api/chats", {
 				headers: {
 					Authorization: `Bearer ${token}`,
 				},
 			});
-			setChats(response.data);
-			console.log(response);
-			console.log(response.data);
+
+			if (response.status === 200) {
+				setChats(response.data);
+			}
 		} catch (error) {
 			if (axios.isAxiosError(error)) {
 				console.log(error.status);
@@ -84,23 +94,31 @@ export const ChatPage = () => {
 		}
 	};
 
-	const fetchChatMessages = async () => {
+	// fetchChatMessages retrieves chat messages for the selected chat
+	const loadChatMessages = async (chatId: string, page: number) => {
 		try {
-			const token = await getToken({ leewayInSeconds: 55 });
-			if (!token) {
+			const token = await getToken();
+			if (!token || token.length === 0) {
 				return;
 			}
+
+			setMessagesLoading(true);
+
 			const response = await axios.get(
-				`/api/chats/${selectedChat}/messages?pageNum=${messagesPage}&langCode=${user?.publicMetadata.lang_code}`,
+				`/api/chats/${chatId}/messages?pageNum=${page}&langCode=${user?.publicMetadata.lang_code}`,
 				{
 					headers: {
 						Authorization: `Bearer ${token}`,
 					},
 				}
 			);
-			setMessages(response.data);
-			console.log(response);
-			console.log(response.data);
+
+			if (response?.status === 200) {
+				setMessagesPage(0);
+				setMessages(response.data);
+				setMessagesLoading(false);
+				return true;
+			}
 		} catch (error) {
 			if (axios.isAxiosError(error)) {
 				console.log(error.status);
@@ -109,6 +127,37 @@ export const ChatPage = () => {
 				console.log(error);
 			}
 		}
+
+		return false;
+	};
+
+	// TODO:
+	// handleSelectChat handles user selecting a chat
+	const updateSelectChat = async (chatId: string) => {
+		if (messagesLoading) return;
+
+		if (chatId === selectedChat && leftOpened) {
+			closeChatList();
+			return;
+		}
+
+		if (chatId === selectedChat) return;
+
+		const success = await loadChatMessages(chatId, 0);
+		if (success) {
+			setSelectedChat(chatId);
+			if (leftOpened) {
+				closeChatList();
+			}
+		}
+	};
+
+	// addMessage adds a message to the current chat
+	const addMessage = (message: Message) => {
+		setMessages((prevMessages) => {
+			if (!prevMessages) return [message];
+			return [...prevMessages, message];
+		});
 	};
 
 	// render modal welcoming user, asking for them to choose a language before
@@ -127,14 +176,16 @@ export const ChatPage = () => {
 					opened={leftOpened}
 					onClose={closeChatList}
 					position="left"
-					title="Chats"
 					offset={20}
 					radius="md"
+					withCloseButton={false}
+					overlayProps={{}}
 				>
 					<ChatList
 						chats={chats}
 						selectedChat={selectedChat}
-						setSelectedChat={setSelectedChat}
+						updateSelectedChat={updateSelectChat}
+						close={closeChatList}
 					/>
 				</Drawer>
 				<Drawer
@@ -147,22 +198,25 @@ export const ChatPage = () => {
 				>
 					<div>Right drawer, wip</div>
 				</Drawer>
-				<div className="chat-list chat-sp lg-border left-panel-border">
+				<div className="chat-list-panel">
 					<ChatList
 						chats={chats}
 						selectedChat={selectedChat}
-						setSelectedChat={setSelectedChat}
+						updateSelectedChat={updateSelectChat}
+						close={null}
 					/>
 				</div>
+
 				<ChatWindow
+					curChatID={selectedChat}
 					messages={messages}
+					messagesLoading={messagesLoading}
+					addMessage={addMessage}
 					openChatList={openChatList}
 					openRight={openRight}
+					disableNav={toggleDisabled}
 				/>
-				<Container
-					mx={0}
-					className="right-panel chat-sp lg-border right-panel-border"
-				></Container>
+				<Container mx={0} className="right-panel chat-sp"></Container>
 			</Flex>
 		</>
 	);
@@ -214,7 +268,7 @@ const LanguageSetWindow = () => {
 
 	const langSetHandler = async () => {
 		try {
-			const token = await getToken({ leewayInSeconds: 55 });
+			const token = await getToken();
 			if (!token) {
 				return;
 			}

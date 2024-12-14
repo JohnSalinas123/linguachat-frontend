@@ -1,10 +1,12 @@
 import * as React from "react";
 import { useAuth } from "@clerk/clerk-react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate, useOutletContext } from "react-router-dom";
 
 export default function ChatLayout() {
 	const { userId, isLoaded } = useAuth();
 	const navigate = useNavigate();
+
+	const [toggleDisabled] = useOutletContext<[(value?: boolean) => void]>();
 
 	React.useEffect(() => {
 		if (isLoaded && !userId) {
@@ -16,7 +18,7 @@ export default function ChatLayout() {
 
 	return userId ? (
 		<div className="page">
-			<Outlet />
+			<Outlet context={[toggleDisabled]}/>
 		</div>
 	) : null;
 }
