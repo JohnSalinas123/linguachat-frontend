@@ -25,8 +25,11 @@ export default function RootLayout() {
 	const navigate = useNavigate();
 	const [opened, { toggle }] = useDisclosure();
 	const location = useLocation();
+	const [disabled, { toggle: toggleDisabled }] = useDisclosure();
 
 	const isAtLandingPage = location.pathname === "/";
+	const isAtSignupPage = location.pathname === "/sign-up";
+	const isAtLoginPage = location.pathname === "/sign-in";
 
 	return (
 		<ClerkProvider
@@ -43,6 +46,7 @@ export default function RootLayout() {
 					collapsed: { desktop: true, mobile: !opened },
 				}}
 				padding={0}
+				disabled={disabled}
 			>
 				<AppShell.Header>
 					<Group h="100%" px="md">
@@ -52,7 +56,7 @@ export default function RootLayout() {
 							hiddenFrom="sm"
 							size="sm"
 						/>
-						<Group justify="space-between" style={{ flex: 1 }}>
+						<Group justify="center" style={{ flex: 1 }}>
 							<Link className="app-home-link" to="/">
 								<Group>
 									<div className="app-logo-box">
@@ -66,14 +70,19 @@ export default function RootLayout() {
 								<UnstyledButton>Home</UnstyledButton>
 								<UnstyledButton>About</UnstyledButton>
 								<UnstyledButton>Support</UnstyledButton>
-								{isAtLandingPage && <ChatNavButton />}
+								{(isAtLandingPage || isAtSignupPage || isAtLoginPage) && (
+									<ChatNavButton />
+								)}
 								<div>
 									<SignedIn>
 										<UserButton showName={true} />
 									</SignedIn>
 									<SignedOut>
 										<Link className="app-sign-in" to="/sign-in">
-											Sign In
+											Login
+										</Link>
+										<Link className="app-sign-up" to="/sign-up">
+											Sign Up
 										</Link>
 									</SignedOut>
 								</div>
@@ -86,7 +95,9 @@ export default function RootLayout() {
 					<UnstyledButton>Home</UnstyledButton>
 					<UnstyledButton>About</UnstyledButton>
 					<UnstyledButton>Support</UnstyledButton>
-					{isAtLandingPage && <ChatNavButton />}
+					{(isAtLandingPage || isAtSignupPage || isAtLoginPage) && (
+						<ChatNavButton />
+					)}
 					<div>
 						<SignedIn>
 							<UserButton showName={true} />
@@ -100,7 +111,7 @@ export default function RootLayout() {
 				</AppShell.Navbar>
 
 				<AppShell.Main>
-					<Outlet />
+					<Outlet context={[toggleDisabled]}/>
 				</AppShell.Main>
 			</AppShell>
 		</ClerkProvider>
