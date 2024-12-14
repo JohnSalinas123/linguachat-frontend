@@ -25,7 +25,7 @@ export const MessageBubble = ({
 
 	return (
 		<>
-			<Container
+			<div
 				className={`message-bubble-outer ${
 					message.sender_id == userId ? "users-align" : "others-align"
 				}`}
@@ -37,19 +37,27 @@ export const MessageBubble = ({
 							: "message-info-other"
 					}`}
 				>
-					{"Name"}
+					{message.sender_username}
 				</Text>
-				<Container
-					pt="4px"
-					pb="4px"
-					pl="10px"
-					pr="10px"
-					className={`message-bubble ${
-						message.sender_id == userId ? "users-message" : "others-message"
+				<div
+					className={`msg-outer ${
+						message.sender_id == userId ? "users-msg-outer" : "others-msg-outer"
 					}`}
 				>
-					<Text size="md">{message.content}</Text>
-				</Container>
+					<Container
+						pt="4px"
+						pb="4px"
+						pl="10px"
+						pr="10px"
+						className={`message-bubble ${
+							message.sender_id == userId ? "users-message" : "others-message"
+						}`}
+					>
+						<Text className="message-content" size="md">
+							{message.content}
+						</Text>
+					</Container>
+				</div>
 				<Text
 					className={`message-info ${
 						message.sender_id == userId
@@ -59,7 +67,7 @@ export const MessageBubble = ({
 				>
 					{convertLastMessageTime(message.created_at)}
 				</Text>
-			</Container>
+			</div>
 		</>
 	);
 };

@@ -1,6 +1,7 @@
 .message-bubble-outer {
 	margin: 0 !important;
 	max-width: 250px !important;
+	padding: 0 10px;
 }
 
 .users-align {
@@ -15,11 +16,29 @@
 	border-radius: 10px;
 	margin: 0 !important;
 	text-align: left;
+	display: inline-block;
+}
+
+.message-content {
+	display: inline-block !important;
+}
+
+.msg-outer {
+	display: flex;
+}
+
+.users-msg-outer {
+	justify-content: right;
+}
+
+.others-msg-outer {
+	justify-content: left;
 }
 
 .users-message {
 	background-color: var(--users-message);
 	color: whitesmoke;
+	text-align: right;
 }
 
 .others-message {
