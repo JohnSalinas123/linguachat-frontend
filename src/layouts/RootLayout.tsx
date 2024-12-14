@@ -111,7 +111,7 @@ export default function RootLayout() {
 				</AppShell.Navbar>
 
 				<AppShell.Main>
-					<Outlet context={[toggleDisabled]}/>
+					<Outlet context={[disabled, toggleDisabled]}/>
 				</AppShell.Main>
 			</AppShell>
 		</ClerkProvider>

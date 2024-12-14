@@ -6,7 +6,8 @@ export default function ChatLayout() {
 	const { userId, isLoaded } = useAuth();
 	const navigate = useNavigate();
 
-	const [toggleDisabled] = useOutletContext<[(value?: boolean) => void]>();
+	const [disabled, toggleDisabled] =
+		useOutletContext<[boolean, (value?: boolean) => void]>();
 
 	React.useEffect(() => {
 		if (isLoaded && !userId) {
@@ -17,8 +18,8 @@ export default function ChatLayout() {
 	if (!isLoaded) return "Loading...";
 
 	return userId ? (
-		<div className="page">
-			<Outlet context={[toggleDisabled]}/>
+		<div className={`page ${disabled ? "page-full" : "page-nav"}`}>
+			<Outlet context={[toggleDisabled]} />
 		</div>
 	) : null;
 }

@@ -59,10 +59,17 @@ a:active {
 }
 
 .page {
-	height: calc(100vh - 60px);
 	display: flex;
 	justify-content: center;
 	align-items: center;
+}
+
+.page-nav {
+	height: calc(100vh - 60px);
+}
+
+.page-full {
+	height: 100vh;
 }
 
 .center {
@@ -94,7 +101,7 @@ a:active {
 }
 
 @media screen and (max-width: 768px) {
-	.page {
+	.page-nav {
 		height: calc(100vh - 48px);
 	}
 }
