@@ -1,20 +1,19 @@
 import {
+	ActionIcon,
 	Button,
 	Center,
 	Container,
 	Group,
-	Skeleton,
 	Stack,
 	Text,
 	UnstyledButton,
 } from "@mantine/core";
 import { Chats } from "../../types/Chats";
-import { Dispatch, SetStateAction, useEffect } from "react";
-
-import { FaCirclePlus } from "react-icons/fa6";
 
 import "./ChatList.css";
 import axios from "axios";
+import { AiOutlineClose } from "react-icons/ai";
+import { LuPlus } from "react-icons/lu";
 
 axios.defaults.baseURL = "http://localhost:8080";
 axios.defaults.withCredentials = true;
@@ -22,13 +21,15 @@ axios.defaults.withCredentials = true;
 interface ChatListProps {
 	chats: Chats | null;
 	selectedChat: string | null;
-	setSelectedChat: Dispatch<SetStateAction<string | null>>;
+	updateSelectedChat: (chatID: string) => void;
+	close: (() => void) | null;
 }
 
 export const ChatList = ({
 	chats,
 	selectedChat,
-	setSelectedChat,
+	updateSelectedChat,
+	close,
 }: ChatListProps) => {
 	//let listOfChats = null
 
@@ -41,22 +42,15 @@ export const ChatList = ({
 		return `${date.getMonth()}/${date.getDate()}/${date.getFullYear() % 100}`;
 	};
 
-	const handleChatSelected = (chatID: string) => {
-		console.log(selectedChat);
-		if (chatID == selectedChat) return;
-
-		setSelectedChat(chatID);
-	};
-
 	const renderChats = () => {
 		if (chats && chats.length > 0) {
 			return (
-				<Stack gap={0}>
+				<Stack gap={0} className="chat-item-stack">
 					{chats &&
 						chats.map((chat) => (
 							<UnstyledButton
 								key={chat.chatId}
-								onClick={() => handleChatSelected(chat.chatId)}
+								onClick={() => updateSelectedChat(chat.chatId)}
 							>
 								<Container
 									className={`chat-item-box ${
@@ -94,36 +88,29 @@ export const ChatList = ({
 
 	return (
 		<>
-			<div className="chat-list-box">
-				<ChatListHeader />
-				<Skeleton radius={0} className="fill-space" visible={chats == null}>
-					{renderChats()}
-				</Skeleton>
+			<div className="chat-list-header">
+				<Group>
+					<Text className="chat-list-header-title">Chats</Text>
+					<Button h={30} radius="lg" rightSection={<LuPlus size={16} />}>
+						Invite
+					</Button>
+				</Group>
+
+				{close && (
+					<ActionIcon
+						onClick={close}
+						color="black"
+						variant="transparent"
+						aria-label="Close chat list"
+					>
+						<AiOutlineClose
+							color="#495057"
+							style={{ width: "70%", height: "70%" }}
+						/>
+					</ActionIcon>
+				)}
 			</div>
+			{renderChats()}
 		</>
-	);
-};
-
-const ChatListHeader = () => {
-	//const { getToken } = useAuth();
-
-	useEffect(() => {}, []);
-
-	const handleCreateChat = async () => {
-		return;
-	};
-
-	return (
-		<div className="chat-list-header">
-			<Text className="chat-list-header-title">Chats</Text>
-			<Button
-				onClick={handleCreateChat}
-				h={30}
-				radius="xl"
-				rightSection={<FaCirclePlus size={15} />}
-			>
-				Invite
-			</Button>
-		</div>
 	);
 };

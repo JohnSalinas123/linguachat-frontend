@@ -2,16 +2,25 @@
 	font-weight: 600 !important;
 }
 
+.chat-list-panel {
+	width: 300px;
+	border-radius: 10px;
+	margin: 10px;
+	overflow-y: hidden;
+	box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+
 .chat-list-header {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	height: 50px;
-	border-bottom: 1px solid var(--light-gray);
 	padding: 0 10px;
+	border-radius: 10px 10px 0 0;
+	box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
 
-.chat-list-box {
+.chat-item-stack {
 	height: calc(100% - 50px);
 }
 
