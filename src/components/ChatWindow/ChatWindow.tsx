@@ -1,26 +1,47 @@
-import { ActionIcon, Button, Center, Container, Group, Stack, TextInput } from "@mantine/core";
+import {
+	ActionIcon,
+	Button,
+	Center,
+	Group,
+	Stack,
+	TextInput,
+	Transition,
+} from "@mantine/core";
 import "./ChatWindow.css";
-import { Messages, Message } from "../../types/Message";
+import { Message } from "../../types/Message";
 import { MessageBubble } from "../MessageBubble/MessageBubble";
-import { useUser } from "@clerk/clerk-react";
+import { useAuth, useUser } from "@clerk/clerk-react";
 
 import { LuMessageCircle } from "react-icons/lu";
 import { LuSettings } from "react-icons/lu";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { IoSend } from "react-icons/io5";
 import { useField } from "@mantine/form";
 
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+
 interface ChatWindowProps {
-	messages: Messages;
+	curChatID: string | null;
+	messagesLoading: boolean;
+	messages: Message[] | null;
+	addMessage: (message: Message) => void;
 	openChatList: () => void;
 	openRight: () => void;
+	disableNav: () => void;
 }
 
 export const ChatWindow = ({
+	curChatID,
+	messagesLoading,
 	messages,
+	addMessage,
 	openChatList,
 	openRight,
+	disableNav,
 }: ChatWindowProps) => {
+	const [navDisabled, setNavDisabled] = useState<boolean>(false);
+
+	const { getToken, isLoaded, isSignedIn } = useAuth();
 	const { user } = useUser();
 
 	const messagesEndRef = useRef<null | HTMLDivElement>(null);
@@ -37,50 +58,194 @@ export const ChatWindow = ({
 		scrollToBottom();
 	}, [messages]);
 
+	const [socket, setSocket] = useState<WebSocket | null>(null);
+	//const currentSocketRef = useRef<WebSocket | null>(null);
+
+	useEffect(() => {
+		if (!isLoaded || !isSignedIn || !curChatID) return;
+
+		//let isCancelled = false;
+
+		const setupWebSocket = async () => {
+			const token = await getToken();
+			if (!token) {
+				return;
+			}
+
+			// close previous WebSocket before creating a new one
+			/*
+			if (
+				currentSocketRef.current &&
+				currentSocketRef.current.readyState === WebSocket.OPEN
+			) {
+				currentSocketRef.current.close();
+			}
+			*/
+
+			// Establish WebSocket connection
+			const ws = new WebSocket(
+				`ws://localhost:8080/ws/${curChatID}?token=${token}`
+			);
+			//currentSocketRef.current = ws;
+			setSocket(ws);
+
+			ws.onopen = () => {
+				//console.log("WebSocket connected");
+			};
+
+			ws.onmessage = (event) => {
+				const messageJSON = event.data;
+				const message = JSON.parse(messageJSON);
+
+				// new message of type Message
+				const newMessage: Message = {
+					id: message.id,
+					chat_id: message.chat_id,
+					sender_username: message.sender_username,
+					sender_id: message.sender_id,
+					content: message.content,
+					created_at: message.created_at,
+					lang_code: message.lang_code,
+				};
+
+				console.log(newMessage);
+
+				addMessage(newMessage);
+			};
+
+			ws.onclose = () => {
+				//console.log("WebSocket connection closed");
+			};
+		};
+
+		setupWebSocket();
+
+		return () => {
+			socket?.close();
+			//isCancelled = true;
+			/*
+			if (
+				currentSocketRef.current &&
+				currentSocketRef.current.readyState === WebSocket.OPEN
+			) {
+				currentSocketRef.current.close();
+			}
+				*/
+		};
+	}, [curChatID, isLoaded, isSignedIn]);
+
+	const handleSendMessage = () => {
+		//console.log("ATTEMPTING TO SEND SOCKET");
+		if (socket && socket.readyState === WebSocket.OPEN) {
+			//console.log("SENDING SOCKET");
+			const content = field.getValue();
+
+			const messageJSON = {
+				sender_username: user?.username,
+				sender_id: user?.id,
+				content: content,
+				lang_code: `{${user?.publicMetadata.lang_code}}`,
+			};
+
+			// Send the message over the WebSocket connection
+			socket.send(JSON.stringify(messageJSON));
+
+			// Clear the input after sending
+			field.setValue("");
+		} else {
+			console.error("WebSocket is not connected");
+		}
+	};
+
+	const renderChat = () => {
+		if (messages != null && messages.length != 0) {
+			return (
+				<Stack className="chat-box-messages">
+					{messages &&
+						messages.map((message: Message, index: number) => (
+							<MessageBubble key={index} message={message} userId={user?.id} />
+						))}
+					<div ref={messagesEndRef} />
+				</Stack>
+			);
+		}
+
+		if (messages != null && messages.length == 0) {
+			return <ChatBoxEmpty />;
+		}
+	};
+
+	const toggleDisableNav = () => {
+		disableNav();
+		setNavDisabled(!navDisabled);
+	};
+
 	return (
 		<>
-			<Container mx={0} p={0} className="chat-container lg-border">
+			<div className="chat-container">
 				<div className="chat-window-header">
-					<ActionIcon
-						variant="light"
-						size="lg"
-						radius="md"
-						aria-label="Settings"
-						onClick={openChatList}
-					>
-						<LuMessageCircle
-							style={{ width: "70%", height: "70%" }}
-							className="chat-menu-icons"
-						/>
-					</ActionIcon>
-					<ActionIcon
-						variant="light"
-						size="lg"
-						radius="md"
-						aria-label="Settings"
-						onClick={openRight}
-					>
-						<LuSettings
-							style={{ width: "70%", height: "70%" }}
-							className="chat-menu-icons"
-						/>
-					</ActionIcon>
-				</div>
-				{messages && messages.length != 0 ? (
-					<Stack className="chat-box-messages">
-						{messages &&
-							messages.map((message: Message, index: number) => (
-								<MessageBubble
-									key={index}
-									message={message}
-									userId={user?.id}
+					<Group>
+						<ActionIcon
+							variant="light"
+							size="lg"
+							radius="md"
+							aria-label="Settings"
+							onClick={openChatList}
+							className="msg-open"
+						>
+							<LuMessageCircle
+								style={{ width: "70%", height: "70%" }}
+								className="chat-menu-icons"
+							/>
+						</ActionIcon>
+					</Group>
+					<Group>
+						<ActionIcon
+							variant="light"
+							size="lg"
+							radius="md"
+							aria-label="Settings"
+							onClick={toggleDisableNav}
+						>
+							{navDisabled ? (
+								<IoIosArrowDown
+									style={{ width: "70%", height: "70%" }}
+									className="chat-menu-icons"
 								/>
-							))}
-						<div ref={messagesEndRef} />
-					</Stack>
-				) : (
-					<ChatBoxEmpty />
-				)}
+							) : (
+								<IoIosArrowUp
+									style={{ width: "70%", height: "70%" }}
+									className="chat-menu-icons"
+								/>
+							)}
+						</ActionIcon>
+					</Group>
+					<Group>
+						<ActionIcon
+							variant="light"
+							size="lg"
+							radius="md"
+							aria-label="Settings"
+							onClick={openRight}
+						>
+							<LuSettings
+								style={{ width: "70%", height: "70%" }}
+								className="chat-menu-icons"
+							/>
+						</ActionIcon>
+					</Group>
+				</div>
+				<div className="chat-box-messages">
+					<Transition
+						mounted={!messagesLoading}
+						transition="fade"
+						duration={400}
+						timingFunction="ease"
+					>
+						{(styles) => <div style={styles}>{renderChat()}</div>}
+					</Transition>
+				</div>
+
 				<Group
 					className="chat-input-box"
 					align="center"
@@ -95,13 +260,18 @@ export const ChatWindow = ({
 						radius="sm"
 					/>
 
-					<Button variant="light" color="blue" radius="sm">
+					<Button
+						variant="light"
+						color="blue"
+						radius="sm"
+						onClick={handleSendMessage}
+					>
 						<Center>
 							<IoSend />
 						</Center>
 					</Button>
 				</Group>
-			</Container>
+			</div>
 		</>
 	);
 };
