@@ -9,12 +9,13 @@ import "./ChatNavButton.css";
 export const ChatNavButton = () => {
 	const { userId, isLoaded } = useAuth();
 
+	if (!isLoaded || !userId) return;
+
 	return (
 		<Link to="/chat">
 			<Button
-				className="chat-nav-button"
-				variant="light"
-				radius="lg"
+				variant="filled"
+				radius="md"
 				rightSection={<IoChatboxEllipsesOutline />}
 				disabled={!isLoaded || !userId}
 			>
