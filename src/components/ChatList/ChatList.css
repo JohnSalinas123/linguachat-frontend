@@ -64,3 +64,49 @@
 .chat-last-msg-time {
 	font-size: 12px !important;
 }
+
+.invite-title {
+	font-size: 20px !important;
+}
+
+.invite-emoji {
+	font-size: 24px;
+	display: inline-block !important;
+}
+
+.invite-box {
+	display: flex;
+	flex-direction: column;
+	justify-items: center;
+	align-items: center;
+	gap: 20px;
+}
+
+.invite-text-box {
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+}
+
+.invite-text-field {
+	flex-grow: 1;
+}
+
+.invite-copy {
+	width: 36px;
+	height: 36px;
+}
+
+.invite-qr-box {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+	border: 5px solid var(--main-blue);
+	border-radius: 20px;
+	padding: 15px;
+}
