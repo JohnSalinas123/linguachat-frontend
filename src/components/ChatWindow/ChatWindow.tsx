@@ -28,6 +28,11 @@ interface ChatWindowProps {
 	openChatList: () => void;
 	openRight: () => void;
 	disableNav: () => void;
+	updateLastMessage: (
+		chatId: string,
+		message: string,
+		timestamp: string
+	) => void;
 }
 
 export const ChatWindow = ({
@@ -38,6 +43,7 @@ export const ChatWindow = ({
 	openChatList,
 	openRight,
 	disableNav,
+	updateLastMessage,
 }: ChatWindowProps) => {
 	const [navDisabled, setNavDisabled] = useState<boolean>(false);
 
@@ -72,21 +78,11 @@ export const ChatWindow = ({
 				return;
 			}
 
-			// close previous WebSocket before creating a new one
-			/*
-			if (
-				currentSocketRef.current &&
-				currentSocketRef.current.readyState === WebSocket.OPEN
-			) {
-				currentSocketRef.current.close();
-			}
-			*/
-
 			// Establish WebSocket connection
 			const ws = new WebSocket(
 				`ws://localhost:8080/ws/${curChatID}?token=${token}`
 			);
-			//currentSocketRef.current = ws;
+
 			setSocket(ws);
 
 			ws.onopen = () => {
@@ -111,6 +107,11 @@ export const ChatWindow = ({
 				console.log(newMessage);
 
 				addMessage(newMessage);
+				updateLastMessage(
+					newMessage.chat_id,
+					newMessage.content,
+					newMessage.created_at
+				);
 			};
 
 			ws.onclose = () => {
@@ -227,6 +228,7 @@ export const ChatWindow = ({
 							radius="md"
 							aria-label="Settings"
 							onClick={openRight}
+							disabled
 						>
 							<LuSettings
 								style={{ width: "70%", height: "70%" }}

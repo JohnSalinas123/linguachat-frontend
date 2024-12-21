@@ -34,7 +34,6 @@ export const ChatPage = () => {
 
 	const [toggleDisabled] = useOutletContext<[(value?: boolean) => void]>();
 
-
 	// side panel states
 	const [leftOpened, { open: openChatList, close: closeChatList }] =
 		useDisclosure(false);
@@ -160,6 +159,19 @@ export const ChatPage = () => {
 		});
 	};
 
+	const updateLastMessage = (chatId: string, newLastMessage: string, newTimestamp: string) => {
+
+		setChats((prevChats) => {
+			if (!prevChats) return prevChats;
+			return prevChats.map((chat) => 
+				chat.chatId === chatId
+					? {...chat, last_message: newLastMessage, last_message_time: newTimestamp }
+					: chat
+			)
+		})
+
+	}
+
 	// render modal welcoming user, asking for them to choose a language before
 	// starting to use chat
 	if (!user?.publicMetadata.lang_code) return <LanguageSetWindow />;
@@ -179,7 +191,6 @@ export const ChatPage = () => {
 					offset={20}
 					radius="md"
 					withCloseButton={false}
-					overlayProps={{}}
 				>
 					<ChatList
 						chats={chats}
@@ -195,6 +206,7 @@ export const ChatPage = () => {
 					offset={20}
 					radius="md"
 					title="Settings"
+					zIndex={"100"}
 				>
 					<div>Right drawer, wip</div>
 				</Drawer>
@@ -215,6 +227,7 @@ export const ChatPage = () => {
 					openChatList={openChatList}
 					openRight={openRight}
 					disableNav={toggleDisabled}
+					updateLastMessage={updateLastMessage}
 				/>
 				<Container mx={0} className="right-panel chat-sp"></Container>
 			</Flex>
