@@ -1,5 +1,6 @@
 :root {
 	--main-blue: #3a86ff;
+	--main-blue-light: #72a6f9;
 
 	--light-blue: rgba(121, 194, 247, 0.2);
 
@@ -62,6 +63,7 @@ a:active {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	height: calc(100vh - var(--app-shell-header-height));
 }
 
 .page-nav {
@@ -98,6 +100,16 @@ a:active {
 
 .lg-text {
 	color: #bbbaba;
+}
+
+.flex-col {
+	display: flex;
+	flex-direction: column;
+}
+
+.flex-row {
+	display: flex;
+	flex-direction: row;
 }
 
 @media screen and (max-width: 768px) {
