@@ -10,6 +10,7 @@ import { ChatPage } from "./pages/ChatPage.tsx";
 import { MantineProvider } from "@mantine/core";
 
 import "@mantine/core/styles.css";
+import { InvitePage } from "./pages/InvitePage.tsx";
 
 const router = createBrowserRouter([
 	{
@@ -21,7 +22,11 @@ const router = createBrowserRouter([
 			{
 				element: <ChatLayout />,
 				path: "chat",
-				children: [{ path: "/chat", element: <ChatPage /> }],
+				children: [
+					{ path: "/chat", element: <ChatPage /> },
+					{ path: "/chat/invite/:inviteCode", element: <InvitePage />}
+				],
+
 			},
 		],
 	},
