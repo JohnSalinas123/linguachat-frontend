@@ -1,6 +1,6 @@
-import * as React from "react";
 import { useAuth } from "@clerk/clerk-react";
 import { Outlet, useNavigate, useOutletContext } from "react-router-dom";
+import { useEffect } from "react";
 
 export default function ChatLayout() {
 	const { userId, isLoaded } = useAuth();
@@ -9,7 +9,7 @@ export default function ChatLayout() {
 	const [disabled, toggleDisabled] =
 		useOutletContext<[boolean, (value?: boolean) => void]>();
 
-	React.useEffect(() => {
+	useEffect(() => {
 		if (isLoaded && !userId) {
 			navigate("/sign-in");
 		}
