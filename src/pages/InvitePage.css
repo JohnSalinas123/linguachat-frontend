@@ -1,0 +1,30 @@
+.inv-accept-body {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 25px;
+	border-radius: 20px;
+}
+
+.inv-header {
+	font-size: 20px;
+}
+
+.inv-header-emoji {
+	font-size: 24px;
+}
+
+.inv-descrip {
+	line-height: 1.8 !important;
+	text-align: center;
+}
+
+.invite-creator {
+	display: inline-flex;
+	align-items: center;
+	padding: 1px 3px;
+	border-radius: 10px;
+	color: var(--main-blue);
+	text-decoration: underline;
+}
