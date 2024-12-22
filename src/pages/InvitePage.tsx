@@ -1,4 +1,4 @@
-import { Button, Center, Group, Text, Highlight } from "@mantine/core";
+import { Button, Group, Text, Modal } from "@mantine/core";
 import { useNavigate, useParams } from "react-router-dom";
 import { FaCheck } from "react-icons/fa6";
 import { IoCloseOutline } from "react-icons/io5";
@@ -19,6 +19,9 @@ export const InvitePage = () => {
 
 	// button states
 	const [acceptLoading, { toggle: toggleAcceptLoading }] = useDisclosure();
+
+	// modal
+	const [opened, { close }] = useDisclosure(true);
 
 	const { inviteCode } = useParams();
 	const navigate = useNavigate();
@@ -111,42 +114,57 @@ export const InvitePage = () => {
 	// handle user exit from chat invitation process
 	// returns the user back to the chat page
 	const handleExit = () => {
+		close();
 		navigate("/chat", { replace: true });
+	};
+
+	const handleClose = () => {
+		return;
 	};
 
 	return (
 		<>
 			{inviteCreator && inviteCodeVal && inviteValid ? (
-				<Center>
-					<div className="invite-accept-box">
-						<Group justify="left">
-							<Text className="inv-header">You're invited to chat!</Text>
-							<div className="inv-header-emoji">📬</div>
-						</Group>
-						<Text className="inv-descrip">
-							{`If accepted, a new chat will be created with `}{" "}
-							<span className="invite-creator">{`${inviteCreator}`}</span>
-						</Text>
-
-						<Group>
-							<Button
-								w={100}
-								rightSection={<FaCheck />}
-								onClick={handleInviteAccept}
-							>
-								Accept
-							</Button>
-							<Button
-								w={100}
-								rightSection={<IoCloseOutline size={18} />}
-								variant="outline"
-								onClick={handleExit}
-							>
-								Exit
-							</Button>
-						</Group>
-					</div>
-				</Center>
+				<>
+					<Modal.Root opened={opened} onClose={handleClose} centered w={200}>
+						<Modal.Overlay backgroundOpacity={0.8} blur={5} color="#b3b6bd" />
+						<Modal.Content radius={20}>
+							<Modal.Header>
+								<Modal.Title>
+									<Group justify="center">
+										<Text className="inv-header">You're invited to chat! </Text>
+										<div className="inv-header-emoji">📬</div>
+									</Group>
+								</Modal.Title>
+							</Modal.Header>
+							<Modal.Body>
+								<div className="inv-accept-body">
+									<Text className="inv-descrip">
+										{`If accepted, a new chat will be created with `}{" "}
+										<span className="invite-creator">{`${inviteCreator}`}</span>
+									</Text>
+									<Group>
+										<Button
+											w={100}
+											rightSection={<FaCheck />}
+											onClick={handleInviteAccept}
+										>
+											Accept
+										</Button>
+										<Button
+											w={100}
+											rightSection={<IoCloseOutline size={18} />}
+											variant="outline"
+											onClick={handleExit}
+										>
+											Exit
+										</Button>
+									</Group>
+								</div>
+							</Modal.Body>
+						</Modal.Content>
+					</Modal.Root>
+				</>
 			) : null}
 		</>
 	);

@@ -1,18 +1,14 @@
-.invite-accept-box {
+.inv-accept-body {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 	gap: 25px;
-	width: 300px;
-	padding: 20px;
-	box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 	border-radius: 20px;
-	border: 3px solid var(--main-blue);
 }
 
 .inv-header {
-	font-weight: bold;
+	font-size: 20px;
 }
 
 .inv-header-emoji {
@@ -20,13 +16,15 @@
 }
 
 .inv-descrip {
+	line-height: 1.8 !important;
+	text-align: center;
 }
 
 .invite-creator {
 	display: inline-flex;
 	align-items: center;
-	background-color: #468bf9;
-	padding: 2px 10px;
+	padding: 1px 3px;
 	border-radius: 10px;
-	color: white;
+	color: var(--main-blue);
+	text-decoration: underline;
 }
