@@ -185,7 +185,7 @@ export const ChatWindow = ({
 		<>
 			<div className="chat-container">
 				<div className="chat-window-header">
-					<Group>
+					<Group w={130} justify="left">
 						<ActionIcon
 							variant="light"
 							size="lg"
@@ -221,7 +221,8 @@ export const ChatWindow = ({
 							)}
 						</ActionIcon>
 					</Group>
-					<Group>
+					<Group w={130} justify="right">
+						<div className="user-lang">{`${(user?.publicMetadata.lang_code as string)?.toUpperCase()}`}</div>
 						<ActionIcon
 							variant="light"
 							size="lg"
