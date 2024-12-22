@@ -177,7 +177,7 @@ export const ChatList = ({
 				zIndex={300}
 			>
 				<Modal.Overlay backgroundOpacity={0.8} blur={5} color="#e9ebf0" />
-				<Modal.Content className="invite-modal">
+				<Modal.Content className="invite-modal" radius={20}>
 					<Modal.Header>
 						<Modal.Title>
 							<Text className="invite-title">
