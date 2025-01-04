@@ -1,4 +1,10 @@
-import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
+import {
+	Link,
+	NavLink,
+	Outlet,
+	useLocation,
+	useNavigate,
+} from "react-router-dom";
 import {
 	ClerkProvider,
 	SignedIn,
@@ -38,7 +44,7 @@ export default function RootLayout() {
 			publishableKey={PUBLISHABLE_KEY}
 		>
 			<AppShell
-				withBorder={false}
+				withBorder={isAtLandingPage}
 				header={{ height: { base: 48, sm: 60 } }}
 				navbar={{
 					width: 300,
@@ -67,9 +73,7 @@ export default function RootLayout() {
 								</Group>
 							</Link>
 							<Group ml="xl" gap={50} visibleFrom="sm">
-								<UnstyledButton>Home</UnstyledButton>
-								<UnstyledButton>About</UnstyledButton>
-								<UnstyledButton>Support</UnstyledButton>
+								<NavLink to="/" className="nav-link">Home</NavLink>
 								{(isAtLandingPage || isAtSignupPage || isAtLoginPage) && (
 									<ChatNavButton />
 								)}

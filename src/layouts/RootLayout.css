@@ -1,3 +1,11 @@
+.nav-link {
+	text-decoration: none;
+}
+
+.nav-link:visited {
+	color: black;
+}
+
 .chat-nav-button {
 	width: 200px;
 }
