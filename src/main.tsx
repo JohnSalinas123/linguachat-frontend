@@ -2,7 +2,7 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import RootLayout from "./layouts/RootLayout.tsx";
-import LandingPage from "./pages/LandingPage.tsx";
+import LandingPage from "./pages/LandingPage/LandingPage.tsx";
 import SignInPage from "./pages/SignInPage.tsx";
 import SignUpPage from "./pages/SignUpPage.tsx";
 import ChatLayout from "./layouts/ChatLayout.tsx";
